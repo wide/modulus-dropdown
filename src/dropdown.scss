@@ -1,0 +1,180 @@
+$-class-main:     'dropdown' !default;
+$-class-current:  '_current' !default;
+$-class-caret:    '_caret' !default;
+$-class-list:     '_list' !default;
+$-class-item:     '_item' !default;
+$-class-group:    '_group' !default;
+$-class-label:    '_label' !default;
+$-class-open:     '-open' !default;
+$-class-top:      '-top' !default;
+
+$-background:             white !default;
+$-border-color:           grey !default;
+$-border-color-active:    black !default;
+$-border-radius:            1px;
+$-caret-content:            '›' !default;
+$-shadow:                   0 3px 4px rgba(0, 0, 0, .08) !default;
+$-shadow-reverse:           0 -3px 4px rgba(0, 0, 0, .08) !default;
+$-item-padding:             8px 18px !default;
+$-item-background-active: lightgrey !default;
+$-group-border-color:     grey !default;
+$-group-padding:            34px !default;
+$-max-height:               40vh !default;
+
+
+/**
+ * Container built around the native <select>
+ */
+.#{$-class-main} {
+  position: relative;
+  display: inline-block;
+  background: $-background;
+  width: 100%;
+
+
+  /**
+   * Native <select> to hide
+   * except on mobile for touch based intercation
+   */ 
+  select {
+    display: none;
+    @at-root .-touch-based & {
+      display: block;
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      top: 1px;
+      bottom: 1px;
+      width: calc(100% - 2px);
+    }
+  }
+
+
+  /**
+   * Reset list and button style
+   */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  button {
+    outline: none;
+  }
+
+
+  /**
+   * Current selected value
+   * - on mobile: click through to open the native <select>
+   */ 
+  &#{$-class-current} {
+    z-index: 1;
+    position: relative;
+    background: $-background;
+    width: 100%;
+    padding: $-item-padding;
+    border-radius: $-border-radius;
+    border: 1px solid $-border-color;
+    text-align: left;
+    @at-root .-touch-based & {
+      pointer-events: none;
+    }
+  }
+  &.#{$-class-open} &#{$-class-current},
+  &#{$-class-current}:focus {
+    border-color: $-border-color-active;
+  }
+
+
+  /**
+   * Right caret, rotated when open
+   */
+  &#{$-class-caret} {
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    font-size: 26px;
+    pointer-events: none;
+    transform: translateY(-50%) rotateZ(90deg);
+    &::before {
+      content: $-caret-content;
+    }
+  }
+  &.#{$-class-open} &#{$-class-caret} {
+    transform: translateY(-50%) rotateZ(90deg) rotateY(180deg);
+  }
+
+
+  /**
+   * List of options
+   * - open to top if element has class .-top
+   */
+  &#{$-class-list} {
+    z-index: 5;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    min-width: 100%;
+    max-height: $-max-height;
+    overflow: auto;
+    background: $-background;
+    border: 1px solid $-border-color;
+    box-shadow: $-shadow;
+  }
+  &:not(.#{$-class-top}) &#{$-class-list} {
+    border-top: none;
+  }
+  &.#{$-class-top} &#{$-class-list} {
+    top: auto;
+    bottom: 100%;
+    border-bottom: none;
+    box-shadow: $-shadow-reverse;
+  }
+  &.#{$-class-open} &#{$-class-list} {
+    display: block;
+  }
+
+
+  /**
+   * Option in list (eq of <option>)
+   */
+  &#{$-class-item} {
+    width: 100%;
+    padding: $-item-padding;
+    border: none;
+    background: none;
+    text-align: left;
+    border-radius: 0;
+    &:focus, &:hover {
+      background: $-item-background-active
+    }
+  }
+
+
+  /**
+   * Group of options (eq of <optgroup>)
+   */
+  &#{$-class-group} {
+    border-top: 1px solid $-group-border-color;
+    border-bottom: 1px solid $-group-border-color;
+  }
+  &#{$-class-group} &#{$-class-item} {
+    padding-left: $-group-padding;
+  }
+
+
+  /**
+   * Label of group (eq of <optgroup label="">)
+   */
+  &#{$-class-label} {
+    padding: 8px 18px;
+    padding-bottom: 0;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    opacity: .4;
+  }
+
+}
