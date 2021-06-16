@@ -1,6 +1,6 @@
 {
   "name": "@wide/modulus-dropdown",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "license": "MIT",
   "author": "Aymeric Assier (https://github.com/myeti)",
   "contributors": [
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
     "rimraf": "^3.0.2"
   }
